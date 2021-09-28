@@ -11,13 +11,13 @@ services:
     ports:
       - "3100:3100"
     volumes:
-      - /argos/loki/loki-config.yaml:/etc/loki/loki-config.yaml
+      - /var/argos/loki/loki-config.yaml:/etc/loki/loki-config.yaml
     command: --config.file=/etc/loki/loki-config.yaml
     logging:
       driver: "loki:latest"
       options:
         #update the URL to match your environment
-        loki-url: "http://loki:3100/loki/api/v1/push"
+        loki-url: "http://localhost:3100/loki/api/v1/push"
     networks:
       - monitor
     restart: always
@@ -26,13 +26,13 @@ services:
     container_name: promtail
     volumes:
       - /var/log:/var/log
-      - /argos/promtail/promtail-config.yaml:/etc/promtail/promtail-config.yaml
+      - /var/argos/promtail/promtail-config.yaml:/etc/promtail/promtail-config.yaml
     command: --config.file=/etc/promtail/promtail-config.yaml
     logging:
       driver: "loki:latest"
       options:
         #update the URL to match your environment
-        loki-url: "http://loki:3100/loki/api/v1/push"
+        loki-url: "http://localhost:3100/loki/api/v1/push"
     networks:
       - monitor
     restart: always
@@ -45,7 +45,7 @@ services:
       driver: "loki:latest"
       options:
         #update the URL to match your environment
-        loki-url: "http://loki:3100/loki/api/v1/push"
+        loki-url: "http://localhost:3100/loki/api/v1/push"
     networks:
       - monitor
     restart: always
@@ -55,13 +55,13 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - /argos/prometheus/prometheus.yml://etc/prometheus/prometheus.yml
-      - /argos/prometheus/data:/prometheus
+      - /var/argos/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - /var/argos/prometheus/data:/prometheus
     logging:
       driver: "loki:latest"
       options:
         #update the URL to match your environment
-        loki-url: "http://loki:3100/loki/api/v1/push"
+        loki-url: "http://localhost:3100/loki/api/v1/push"
     networks:
       - monitor
     restart: always
@@ -82,7 +82,7 @@ services:
       driver: "loki:latest"
       options:
         #update the URL to match your environment
-        loki-url: "http://loki:3100/loki/api/v1/push"
+        loki-url: "http://localhost:3100/loki/api/v1/push"
     networks:
       - monitor
     restart: always
