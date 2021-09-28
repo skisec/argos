@@ -15,6 +15,9 @@ services:
     command: --config.file=/etc/loki/loki-config.yaml
     logging:
       driver: "loki:latest"
+      options:
+        #update the URL to match your environment
+        loki-url: "http://loki:3100/loki/api/v1/push"
     networks:
       - monitor
     restart: always
@@ -27,6 +30,9 @@ services:
     command: --config.file=/etc/promtail/promtail-config.yaml
     logging:
       driver: "loki:latest"
+      options:
+        #update the URL to match your environment
+        loki-url: "http://loki:3100/loki/api/v1/push"
     networks:
       - monitor
     restart: always
@@ -37,6 +43,9 @@ services:
       - "3000:3000"
     logging:
       driver: "loki:latest"
+      options:
+        #update the URL to match your environment
+        loki-url: "http://loki:3100/loki/api/v1/push"
     networks:
       - monitor
     restart: always
@@ -50,6 +59,9 @@ services:
       - /argos/prometheus/data:/prometheus
     logging:
       driver: "loki:latest"
+      options:
+        #update the URL to match your environment
+        loki-url: "http://loki:3100/loki/api/v1/push"
     networks:
       - monitor
     restart: always
@@ -68,6 +80,9 @@ services:
       - '--path.sysfs=/host/sys'
     logging:
       driver: "loki:latest"
+      options:
+        #update the URL to match your environment
+        loki-url: "http://loki:3100/loki/api/v1/push"
     networks:
       - monitor
     restart: always
