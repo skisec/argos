@@ -3,7 +3,11 @@ version: '3.8'
 networks:
   monitor:
     driver: bridge
-
+volumes:
+  grafana_data:
+    external: false
+  prometheus_data:
+    external: false
 services:
   loki:
     image: grafana/loki:latest
@@ -39,8 +43,11 @@ services:
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
+    user: "0:0"
     ports:
       - "3000:3000"
+    volumes:
+      - /var/argos/grafana/data:/var/lib/grafana
     logging:
       driver: "loki:latest"
       options:
@@ -52,6 +59,7 @@ services:
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
+    user: "0:0"
     ports:
       - "9090:9090"
     volumes:
