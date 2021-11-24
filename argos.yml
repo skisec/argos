@@ -48,6 +48,8 @@ services:
       - "3000:3000"
     volumes:
       - /var/argos/grafana/data:/var/lib/grafana
+      - /var/argos/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources/
+      - /var/argos/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards/
     logging:
       driver: "loki:latest"
       options:
