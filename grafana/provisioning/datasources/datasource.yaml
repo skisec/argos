@@ -4,12 +4,12 @@ datasources:
   - name: Loki
     type: loki
     access: server
-    url: http://localhost:3100
+    url: ${LOKI_URL}
     jsonData:
       maxLines: 1000
   - name: Prometheus
     type: prometheus
     access: server
-    url: http://localhost:9090
+    url: ${PROM_URL}
     jsonData:
       maxLines: 1000
