@@ -23,6 +23,12 @@ To use this stack, navigate to `/var` clone this repo. If you wish to clone this
 
 `git clone https://github.com/skisec/argos.git` and `cd argos`
 
+Update the following settings for the Loki and Prometheus IPs in the `.env` file:
+
+`loki_url=http://<YOUR IP>:3100`
+
+`prometheus_url=http://<YOUR IP>:9090`
+
 Once you are in your inside `/var/argos` run the following to spin up the stack:
 
 `docker-compose -f argos.yml up -d`
