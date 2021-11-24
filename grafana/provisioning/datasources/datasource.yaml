@@ -3,13 +3,13 @@ apiVersion: 1
 datasources:
   - name: Loki
     type: loki
-    access: direct
+    access: server
     url: http://localhost:3100
     jsonData:
       maxLines: 1000
   - name: Prometheus
     type: prometheus
-    access: direct
+    access: server
     url: http://localhost:9090
     jsonData:
       maxLines: 1000
