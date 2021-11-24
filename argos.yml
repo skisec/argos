@@ -44,12 +44,17 @@ services:
     image: grafana/grafana:latest
     container_name: grafana
     user: "0:0"
+    env_file:
+      - .env
     ports:
       - "3000:3000"
     volumes:
       - /var/argos/grafana/data:/var/lib/grafana
       - /var/argos/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources/
       - /var/argos/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards/
+    #If you would like to preinstall specific plugins, uncomment the two lines below and add the plugins names you wish to be installed
+    #environment:
+      #- GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
     logging:
       driver: "loki:latest"
       options:
@@ -96,5 +101,3 @@ services:
     networks:
       - monitor
     restart: always
-    
-    
