@@ -25,7 +25,7 @@ services:
         loki-url: "$LOKI_URL/loki/api/v1/push"
     networks:
       - monitor
-    restart: always
+    restart: unless-stopped
   promtail:
     image: grafana/promtail:latest
     container_name: promtail
@@ -39,7 +39,7 @@ services:
         loki-url: "$LOKI_URL/loki/api/v1/push"
     networks:
       - monitor
-    restart: always
+    restart: unless-stopped
 
   # Grafana Configuration
   grafana:
@@ -63,7 +63,7 @@ services:
         loki-url: "$LOKI_URL/loki/api/v1/push"
     networks:
       - monitor
-    restart: always
+    restart: unless-stopped
 
   # Prometheus Configuration
   prometheus:
@@ -81,7 +81,7 @@ services:
         loki-url: "$LOKI_URL/loki/api/v1/push"
     networks:
       - monitor
-    restart: always
+    restart: unless-stopped
   
   # Node Exporter Configuration
   node_exporter:
@@ -103,7 +103,7 @@ services:
         loki-url: "$LOKI_URL/loki/api/v1/push"
     networks:
       - monitor
-    restart: always
+    restart: unless-stopped
 
   # Blackbox Exporter Configuration
   blackbox_exporter:
@@ -119,4 +119,4 @@ services:
         loki-url: "$LOKI_URL/loki/api/v1/push"
     networks:
       - monitor
-    restart: always
+    restart: unless-stopped
