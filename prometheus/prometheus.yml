@@ -36,7 +36,7 @@ scrape_configs:
   - job_name: "blackbox"
     metrics_path: /probe
     params:
-      module: [http_2xx] # Look for a HTTP 200 response.
+      module: [http_2xx] # Uses a module as configured in blackbox.yml
     static_configs:
       - targets:
         - $LOKI_URL
