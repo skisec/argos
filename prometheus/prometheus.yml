@@ -42,8 +42,8 @@ scrape_configs:
       module: [http_2xx] # Uses a module as configured in blackbox.yml
     static_configs:
       - targets:
-        - prometheus:9090
-        - grafana:3000
+        - <YOUR IP>:9090
+        - <YOUR IP>:3000
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
