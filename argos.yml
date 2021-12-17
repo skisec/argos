@@ -20,8 +20,7 @@ services:
     logging:
       driver: "loki:latest"
       options:
-        #update the URL to match your environment
-        loki-url: "http://localhost:3100/loki/api/v1/push"
+        loki-url: "$LOKI_URL/loki/api/v1/push"
     networks:
       - monitor
     restart: always
@@ -35,8 +34,7 @@ services:
     logging:
       driver: "loki:latest"
       options:
-        #update the URL to match your environment
-        loki-url: "http://localhost:3100/loki/api/v1/push"
+        loki-url: "$LOKI_URL/loki/api/v1/push"
     networks:
       - monitor
     restart: always
@@ -58,8 +56,7 @@ services:
     logging:
       driver: "loki:latest"
       options:
-        #update the URL to match your environment
-        loki-url: "http://localhost:3100/loki/api/v1/push"
+        loki-url: "$LOKI_URL/loki/api/v1/push"
     networks:
       - monitor
     restart: always
@@ -75,8 +72,7 @@ services:
     logging:
       driver: "loki:latest"
       options:
-        #update the URL to match your environment
-        loki-url: "http://localhost:3100/loki/api/v1/push"
+        loki-url: "$LOKI_URL/loki/api/v1/push"
     networks:
       - monitor
     restart: always
@@ -96,8 +92,7 @@ services:
     logging:
       driver: "loki:latest"
       options:
-        #update the URL to match your environment
-        loki-url: "http://localhost:3100/loki/api/v1/push"
+        loki-url: "$LOKI_URL/loki/api/v1/push"
     networks:
       - monitor
     restart: always
