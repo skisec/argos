@@ -112,7 +112,8 @@ services:
     ports:
       - '9115:9115'
     volumes:
-      - $DATA_STORAGE/blackbox/blackbox.yml=/config/blackbox.yml
+      - $DATA_STORAGE/blackbox/blackbox.yml:/config/blackbox.yml
+    command: --config.file=/config/blackbox.yml
     logging:
       driver: "loki:latest"
       options:

@@ -39,7 +39,7 @@ scrape_configs:
   - job_name: "blackbox"
     metrics_path: /probe
     params:
-      module: [http_2xx] # Uses a module as configured in blackbox.yml
+      module: [http_200] # Uses a module as configured in blackbox.yml
     static_configs:
       - targets:
         # - <YOUR IP>:9090
