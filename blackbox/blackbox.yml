@@ -1,0 +1,12 @@
+# Examples available at https://github.com/prometheus/blackbox_exporter/blob/master/example.yml
+modules:
+  http_200:
+    prober: http
+    timeout: 5s
+    http:
+      method: GET
+    tls_config:
+        insecure_skip_verify: true
+    preferred_ip_protocol: "ip4" # defaults to "ip6"
+    ip_protocol_fallback: false
+    

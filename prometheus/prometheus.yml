@@ -20,6 +20,8 @@ rule_files:
 # Here it's Prometheus itself.
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+
+  # Node Exporter Scraper
   - job_name: "prometheus"
     scrape_interval: 5s
     # metrics_path defaults to '/metrics'
@@ -27,7 +29,26 @@ scrape_configs:
 
     static_configs:
       - targets: ["localhost:9090"]
+
   - job_name: "node"
-    scrape_interval: 5s
+    scrape_interval: 15s
     static_configs:
       - targets: ["node-exporter:9100"]
+  
+  # Black Box HTTP 200 Response Scraper
+  - job_name: "blackbox"
+    metrics_path: /probe
+    params:
+      module: [http_200] # Uses a module as configured in blackbox.yml
+    static_configs:
+      - targets:
+        # - <YOUR IP>:9090
+        # - <YOUR IP>:3000
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115
+        
