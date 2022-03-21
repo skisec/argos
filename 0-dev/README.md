@@ -1,4 +1,4 @@
-# Argos
+# Argos (DEV)
 Monitoring stack featuring Grafana, Prometheus, Loki, Promtail, and Node Exporter bundled into Docker Compose
 
 ## Features
@@ -24,17 +24,19 @@ More info can be found here: https://grafana.com/docs/loki/latest/clients/docker
 
 ## Installation
 
-To use this stack, navigate to the directory of your chosing and clone this repo. You will need to modify the `argos.yml` file and update the paths to match your working directory.
+To use this stack, navigate to the directory of your chosing and clone this repo. You will need to modify the `argos-dev.yml` file and update the paths to match your working directory.
 
-`git clone https://github.com/skisec/argos.git` and `cd argos`
+`git clone https://github.com/skisec/argos.git` and `cd argos/0-dev`
 
 Update the following settings for the Loki and Prometheus IPs in the `.env` file:
 
 `LOKI_URL=http://<YOUR IP>:3100`
 
+`PROM_URL=http://<YOUR IP>:9090`
+
 Once you are in your inside the directory run the following to spin up the stack:
 
-`docker-compose -f argos.yml up -d`
+`docker-compose -f argos-dev.yml up -d`
 
 You can access the services at the following ports:
 * Grafana: `<YOUR IP>:3000`
