@@ -1,0 +1,123 @@
+version: '3.8'
+
+networks:
+  monitor:
+    driver: bridge
+volumes:
+  grafana_data:
+    external: false
+  prometheus_data:
+    external: false
+services:
+
+  #Loki Configuration
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    ports:
+      - "3100:3100"
+    volumes:
+      - $DATA_STORAGE/loki/loki-config.yaml:/etc/loki/loki-config.yaml
+    command: --config.file=/etc/loki/loki-config.yaml
+    logging:
+      driver: "loki:latest"
+      options:
+        loki-url: "$LOKI_URL/loki/api/v1/push"
+    networks:
+      - monitor
+    restart: unless-stopped
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    volumes:
+      - /var/log:/var/log
+      - $DATA_STORAGE/promtail/promtail-config.yaml:/etc/promtail/promtail-config.yaml
+    command: --config.file=/etc/promtail/promtail-config.yaml
+    logging:
+      driver: "loki:latest"
+      options:
+        loki-url: "$LOKI_URL/loki/api/v1/push"
+    networks:
+      - monitor
+    restart: unless-stopped
+
+  # Grafana Configuration
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    user: "0:0"
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    volumes:
+      - $DATA_STORAGE/grafana/data:/var/lib/grafana
+      - $DATA_STORAGE/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources/
+      - $DATA_STORAGE/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards/
+    #If you would like to preinstall specific plugins, uncomment the two lines below and add the plugins names you wish to be installed
+    #environment:
+      #- GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+    logging:
+      driver: "loki:latest"
+      options:
+        loki-url: "$LOKI_URL/loki/api/v1/push"
+    networks:
+      - monitor
+    restart: unless-stopped
+
+  # Prometheus Configuration
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    user: "0:0"
+    ports:
+      - "9090:9090"
+    volumes:
+      - $DATA_STORAGE/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - $DATA_STORAGE/prometheus/data:/prometheus
+    logging:
+      driver: "loki:latest"
+      options:
+        loki-url: "$LOKI_URL/loki/api/v1/push"
+    networks:
+      - monitor
+    restart: unless-stopped
+  
+  # Node Exporter Configuration
+  node_exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    ports:
+      - '9100:9100'
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+    logging:
+      driver: "loki:latest"
+      options:
+        loki-url: "$LOKI_URL/loki/api/v1/push"
+    networks:
+      - monitor
+    restart: unless-stopped
+
+  # Blackbox Exporter Configuration
+  blackbox_exporter:
+    image: prom/blackbox-exporter
+    container_name: blackbox-exporter
+    ports:
+      - '9115:9115'
+    volumes:
+      - $DATA_STORAGE/blackbox/blackbox.yml:/config/blackbox.yml
+    command: --config.file=/config/blackbox.yml
+    logging:
+      driver: "loki:latest"
+      options:
+        loki-url: "$LOKI_URL/loki/api/v1/push"
+    networks:
+      - monitor
+    restart: unless-stopped
