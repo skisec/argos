@@ -4,10 +4,8 @@ networks:
   monitor:
     driver: bridge
 volumes:
-  grafana_data:
-    external: false
-  prometheus_data:
-    external: false
+  grafana-data:
+  prometheus-data:
 services:
 
   #Loki Configuration
@@ -17,7 +15,7 @@ services:
     ports:
       - "3100:3100"
     volumes:
-      - $DATA_STORAGE/loki/loki-config.yaml:/etc/loki/loki-config.yaml
+      - ./path/to/loki:/etc/loki/
     command: --config.file=/etc/loki/loki-config.yaml
     logging:
       driver: "loki:latest"
@@ -31,7 +29,7 @@ services:
     container_name: promtail
     volumes:
       - /var/log:/var/log
-      - $DATA_STORAGE/promtail/promtail-config.yaml:/etc/promtail/promtail-config.yaml
+      - ./path/to/promtail-config.yaml:/etc/promtail/promtail-config.yaml
     command: --config.file=/etc/promtail/promtail-config.yaml
     logging:
       driver: "loki:latest"
@@ -51,9 +49,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - $DATA_STORAGE/grafana/data:/var/lib/grafana
-      - $DATA_STORAGE/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources/
-      - $DATA_STORAGE/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards/
+      - grafana-data:/var/lib/grafana
     #If you would like to preinstall specific plugins, uncomment the two lines below and add the plugins names you wish to be installed
     #environment:
       #- GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
@@ -73,8 +69,8 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - $DATA_STORAGE/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - $DATA_STORAGE/prometheus/data:/prometheus
+      - ./path/to/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
     logging:
       driver: "loki:latest"
       options:
@@ -112,7 +108,7 @@ services:
     ports:
       - '9115:9115'
     volumes:
-      - $DATA_STORAGE/blackbox/blackbox.yml:/config/blackbox.yml
+      - ./path/to/blackbox.yml:/config/blackbox.yml
     command: --config.file=/config/blackbox.yml
     logging:
       driver: "loki:latest"
