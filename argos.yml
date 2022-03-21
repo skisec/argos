@@ -15,7 +15,7 @@ services:
     ports:
       - "3100:3100"
     volumes:
-      - ./path/to/loki:/etc/loki/
+      - ./path/to/loki-config.yaml:/etc/loki/loki-config.yaml
     command: --config.file=/etc/loki/loki-config.yaml
     logging:
       driver: "loki:latest"
