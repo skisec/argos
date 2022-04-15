@@ -19,7 +19,7 @@ More info can be found here: https://grafana.com/docs/loki/latest/clients/docker
 
 ## Installation
 
-To use this stack, navigate to the directory of your chosing and clone this repo. You will need to modify the `argos-dev.yml` file and update the paths to match your working directory.
+To use this stack, navigate to the directory of your chosing and clone this repo. You will need to modify the `argos.yml` file and update the paths to match your working directory.
 
 `git clone https://github.com/skisec/argos.git` and `cd argos`
 
@@ -28,6 +28,8 @@ Update the following settings for the Loki and Prometheus IPs in the `.env` file
 `LOKI_URL=http://<YOUR IP>:3100`
 
 `PROM_URL=http://<YOUR IP>:9090`
+
+`DATA_STORAGE=/path/to/configs/`
 
 Once you are in your inside the directory run the following to spin up the stack:
 
@@ -40,5 +42,5 @@ You can access the services at the following ports:
 If additional plugins are required, refer to the following link for details: https://grafana.com/docs/grafana/latest/installation/docker/#install-plugins-in-the-docker-container
 
 ## Configuration
-Once you have the stack deployed, you will need to add the Loki and Prometheus datasources in Grafana manually.
+Once you have the stack deployed, you will need to add any datasources and dashboards for Grafana cmanually.
 
