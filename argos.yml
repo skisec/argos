@@ -49,6 +49,8 @@ services:
     image: grafana/grafana:latest
     container_name: grafana
     user: "0:0"
+    ports:
+      - "3000:3000"
     env_file:
       - .env
     volumes:
@@ -151,6 +153,6 @@ services:
       UP_UNIFI_CONTROLLER_0_SAVE_EVENTS="true"
       UP_UNIFI_CONTROLLER_0_SAVE_IDS="true"
       UP_UNIFI_CONTROLLER_0_SAVE_SITES="true"
-      UP_UNIFI_CONTROLLER_0_URL=https://10.53.0.1:8443
+      UP_UNIFI_CONTROLLER_0_URL=https://<Insert IP>:8443
       UP_UNIFI_CONTROLLER_0_USER=<user>
       UP_UNIFI_CONTROLLER_0_PASS=<password>
