@@ -1,5 +1,4 @@
 version: '3.8'
-
 networks:
   monitor:
     driver: bridge
@@ -9,9 +8,9 @@ volumes:
   prometheus_data:
     external: false
 services:
-
   #Loki Configuration
   loki:
+    profiles: ["core"]
     image: grafana/loki:latest
     container_name: loki
     ports:
@@ -25,8 +24,10 @@ services:
         loki-url: "$LOKI_URL/loki/api/v1/push"
     networks:
       - monitor
+      #- proxy
     restart: unless-stopped
   promtail:
+    profiles: ["core"]
     image: grafana/promtail:latest
     container_name: promtail
     volumes:
@@ -39,17 +40,17 @@ services:
         loki-url: "$LOKI_URL/loki/api/v1/push"
     networks:
       - monitor
+      #- proxy
     restart: unless-stopped
 
   # Grafana Configuration
   grafana:
+    profiles: ["core"]
     image: grafana/grafana:latest
     container_name: grafana
     user: "0:0"
     env_file:
       - .env
-    ports:
-      - "3000:3000"
     volumes:
       - $DATA_STORAGE/grafana/data:/var/lib/grafana
       - $DATA_STORAGE/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources/
@@ -63,10 +64,12 @@ services:
         loki-url: "$LOKI_URL/loki/api/v1/push"
     networks:
       - monitor
+      #- proxy
     restart: unless-stopped
 
   # Prometheus Configuration
   prometheus:
+    profiles: ["core"]
     image: prom/prometheus:latest
     container_name: prometheus
     user: "0:0"
@@ -81,10 +84,12 @@ services:
         loki-url: "$LOKI_URL/loki/api/v1/push"
     networks:
       - monitor
+      #- proxy
     restart: unless-stopped
   
   # Node Exporter Configuration
   node_exporter:
+    profiles: ["core"]  
     image: prom/node-exporter:latest
     container_name: node-exporter
     ports:
@@ -103,10 +108,12 @@ services:
         loki-url: "$LOKI_URL/loki/api/v1/push"
     networks:
       - monitor
+      #- proxy
     restart: unless-stopped
 
   # Blackbox Exporter Configuration
   blackbox_exporter:
+    profiles: ["addon","blackbox"]
     image: prom/blackbox-exporter
     container_name: blackbox-exporter
     ports:
@@ -120,4 +127,30 @@ services:
         loki-url: "$LOKI_URL/loki/api/v1/push"
     networks:
       - monitor
+      #- proxy
     restart: unless-stopped
+
+  #Unifi Poller
+  unpoller:
+    profiles: ["addon","unpoller"]
+    image: ghcr.io/unpoller/unpoller:latest
+    restart: unless-stopped
+    ports:
+      - '9130:9130'
+    container_name: unpoller
+    env_file:
+      - .env
+    environment:
+      UP_INFLUXDB_DISABLE="true"
+      UP_POLLER_DEBUG="false"
+      UP_UNIFI_DYNAMIC="false"
+      UP_PROMETHEUS_HTTP_LISTEN=0.0.0.0:9130
+      UP_UNIFI_CONTROLLER_0_SAVE_ALARMS="true"
+      UP_UNIFI_CONTROLLER_0_SAVE_ANOMALIES="true"
+      UP_UNIFI_CONTROLLER_0_SAVE_DPI="true"
+      UP_UNIFI_CONTROLLER_0_SAVE_EVENTS="true"
+      UP_UNIFI_CONTROLLER_0_SAVE_IDS="true"
+      UP_UNIFI_CONTROLLER_0_SAVE_SITES="true"
+      UP_UNIFI_CONTROLLER_0_URL=https://10.53.0.1:8443
+      UP_UNIFI_CONTROLLER_0_USER=<user>
+      UP_UNIFI_CONTROLLER_0_PASS=<password>

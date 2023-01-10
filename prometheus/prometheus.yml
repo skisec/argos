@@ -34,21 +34,28 @@ scrape_configs:
     scrape_interval: 15s
     static_configs:
       - targets: ["node-exporter:9100"]
-  
+
+  # Uncomment if using these add-ons
+    
   # Black Box HTTP 200 Response Scraper
-  - job_name: "blackbox"
-    metrics_path: /probe
-    params:
-      module: [http_200] # Uses a module as configured in blackbox.yml
-    static_configs:
-      - targets:
-        # - <YOUR IP>:9090
-        # - <YOUR IP>:3000
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: blackbox-exporter:9115
-        
+  #- job_name: "blackbox"
+  #  metrics_path: /probe
+  #  params:
+  #    module: [http_200] # Uses a module as configured in blackbox.yml
+  #  static_configs:
+  #    - targets:
+         # - 0.0.0.0:9090
+         # - 0.0.0.0:3000
+  #  relabel_configs:
+  #    - source_labels: [__address__]
+  #      target_label: __param_target
+  #    - source_labels: [__param_target]
+  #      target_label: instance
+  #    - target_label: __address__
+  #      replacement: blackbox-exporter:9115
+  
+  #Unifi Poller Scraper
+  #- job_name: 'unifipoller'
+  #  scrape_interval: 30s
+  #  static_configs:
+  #    - targets: ['unpoller:9130']
